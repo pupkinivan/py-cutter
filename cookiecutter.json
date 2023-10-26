@@ -10,5 +10,5 @@
     "include_postgres": false,
     "containerize_gcc": false,
     "containerize_latex": false,
-    "git_host": "github|gitlab|bitbucket"
+    "git_host": ["github", "gitlab", "bitbucket"]
 }
