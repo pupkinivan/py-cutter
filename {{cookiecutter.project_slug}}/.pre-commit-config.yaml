@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: large-files
+  - local:
+      - id: ruff-formatting
+        name: Code formatting (ruff)
+        types_or: [python, ipynb]
+      - id: ruff-linting
+        name: Linting (ruff)
+        types_or: [python, ipynb]
+      - id: mypy-typechecking
+        name: Type checking (mypy)
+        types_or: [python, ipynb]

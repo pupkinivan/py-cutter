@@ -1,0 +1,47 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+      - stage
+      - develop
+
+jobs:
+  install-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: {{cookiecutter.python_version}}
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+          source $HOME/.poetry/env
+
+      - name: Install dependencies
+        run: poetry install --no-root --compile
+
+      - name: Install self
+        run: poetry install --only-root
+
+  lint-and-format:
+    runs-on: ubuntu-latest
+    needs: [install-project]
+    steps:
+      - name: Linting
+        id: linting
+        run: |
+          poetry run ruff {{cookiecutter.project_src_dir}}
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: [install-project]
+    steps:
+      - name: Run unit tests
+        run: poetry run pytest
